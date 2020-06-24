@@ -1,11 +1,14 @@
+from dataclasses import dataclass
+from typing import Any
+
+
+@dataclass(frozen=True)
 class Vector:
+    x: Any
+    y: Any
+    z: Any
 
     __slots__ = ('x', 'y', 'z')
-
-    def __init__(self, x, y, z):
-        object.__setattr__(self, 'x', x)
-        object.__setattr__(self, 'y', y)
-        object.__setattr__(self, 'z', z)
 
     def __repr__(self):
         return f'Vector({self.x}, {self.y}, {self.z})'
@@ -14,7 +17,7 @@ class Vector:
         return repr(self)
 
     def __iter__(self):
-        return iter((self.x, self.y, self.z))
+        yield from (self.x, self.y, self.z)
 
     def __eq__(self, other):
         if other is self:
@@ -41,6 +44,3 @@ class Vector:
 
     def __truediv__(self, other):
         return self * (1/other)
-
-    def __setattr__(self, name, value):
-        raise AttributeError("Vectors are immutable")
