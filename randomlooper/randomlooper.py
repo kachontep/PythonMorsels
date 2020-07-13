@@ -1,14 +1,10 @@
 import random
-from functools import reduce
-from collections.abc import Iterable
+from itertools import chain
 
 
 class RandomLooper:
     def __init__(self, *args):
-        for seq in args:
-            if not isinstance(seq, Iterable):
-                raise TypeError("Parameters should be iterable")
-        self._choices = reduce(lambda acc, c: acc + list(c), args, [])
+        self._choices = list(chain(*args))
 
     def __iter__(self):
         yield from self._rand_choices()
