@@ -22,7 +22,7 @@ class MutableString(UserString):
         self.data = (self.data[:start_pos] + value + self.data[stop_pos:])
 
     def __delitem__(self, key):
-        self.__setitem__(key, '')
+        self[key] = ''
 
     def append(self, s):
         self.data += s
