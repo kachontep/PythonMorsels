@@ -29,14 +29,14 @@ class Point:
                 f"- should be used with another Point instance rather than {other}")
         return Point(self.x - other.x, self.y - other.y, self.z - other.z)
 
-    def __mul__(self, scalar):
-        if scalar is None or not isinstance(scalar, numbers.Number):
+    def __mul__(self, n):
+        if n is None or not isinstance(n, numbers.Number):
             raise TypeError(
-                f"* should be used with another number rather than {scalar}")
-        return Point(self.x * scalar, self.y * scalar, self.z * scalar)
+                f"* should be used with another number rather than {n}")
+        return Point(self.x * n, self.y * n, self.z * n)
 
-    def __rmul__(self, scalar):
-        return self * scalar
+    def __rmul__(self, n):
+        return self * n
 
     def __iter__(self):
         yield from (self.x, self.y, self.z)
