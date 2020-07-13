@@ -29,7 +29,7 @@ class RandomLooperTests(unittest.TestCase):
         self.assertEqual(numbers, [1, 2, 3, 4])
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_length(self):
         looper = RandomLooper(range(1000))
         self.assertEqual(len(looper), 1000)
@@ -37,7 +37,7 @@ class RandomLooperTests(unittest.TestCase):
         self.assertEqual(len(looper), 5)
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_accepts_multiple_iterables(self):
         self.assertEqual(
             set(RandomLooper([1, 2], 'hey')),
@@ -57,7 +57,7 @@ class RandomLooperTests(unittest.TestCase):
         self.assertLess(three_count, 15)
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_looping_multiple_times(self):
         looper = RandomLooper(range(1000))
         loop1, loop2 = list(looper), list(looper)
