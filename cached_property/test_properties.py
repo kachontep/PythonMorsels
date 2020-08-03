@@ -142,7 +142,7 @@ class CachedPropertyTests(unittest.TestCase):
         self.assertEqual(thing.x, 9)
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_accessing_attribute_on_class(self):
         class Thing:
             @cached_property
@@ -155,7 +155,7 @@ class CachedPropertyTests(unittest.TestCase):
         self.assertEqual(Thing.x.__get__(thing, Thing), 4)
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_setter_and_deleter_attributes(self):
         class Circle:
             def __init__(self, radius=1):
