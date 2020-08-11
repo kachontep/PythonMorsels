@@ -1,12 +1,18 @@
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
+from functools import reduce
 
 sentinel = object()
 
 
 class ProxyDict:
-    def __init__(self, d=sentinel):
-        # self._items = dict({} if d is sentinel else d)
-        self._items = dict() if d is sentinel else d
+    def __init__(self, *args):
+        if isinstance(args, Sequence):
+            if len(args) > 1:
+                self._items = reduce(lambda acc, d: {**acc, **d}, args, dict())
+            else:
+                self._items = next(iter(args))
+        else:
+            self._items = dict()
 
     def __getitem__(self, key):
         return self._items[key]

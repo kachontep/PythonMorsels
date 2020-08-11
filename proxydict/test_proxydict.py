@@ -86,7 +86,7 @@ class ProxyDictTests(unittest.TestCase):
         self.assertEqual(set(d), {"a", "c"})
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_accepts_multiple_mappings(self):
         m1 = {1: "a", 3: "c"}
         m2 = {2: "b", 5: "z"}
