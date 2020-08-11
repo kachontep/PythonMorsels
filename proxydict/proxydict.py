@@ -41,3 +41,6 @@ class ProxyDict:
 
     def items(self):
         return self._items.items()
+
+    def get(self, key, default=None):
+        return self._items.get(key, default)
