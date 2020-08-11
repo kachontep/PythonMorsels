@@ -96,7 +96,7 @@ class ProxyDictTests(unittest.TestCase):
         self.assertEqual(d[5], "e")
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_maps_attribute_and_repr(self):
         m1 = {1: "a", 3: "c"}
         m2 = {2: "b", 5: "z"}

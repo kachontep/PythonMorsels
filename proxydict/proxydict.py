@@ -13,6 +13,7 @@ class ProxyDict:
                 self._items = next(iter(args))
         else:
             self._items = dict()
+        self._args = list(args)
 
     def __getitem__(self, key):
         return self._items[key]
@@ -37,7 +38,7 @@ class ProxyDict:
             return False
 
     def __repr__(self):
-        return repr(self._items)
+        return f"ProxyDict({', '.join(map(repr, self._args))})"
 
     def keys(self):
         return self._items.keys()
@@ -50,3 +51,7 @@ class ProxyDict:
 
     def get(self, key, default=None):
         return self._items.get(key, default)
+
+    @property
+    def maps(self):
+        return self._args
