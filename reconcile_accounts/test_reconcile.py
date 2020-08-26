@@ -66,7 +66,7 @@ class ReconcileAccountsTests(unittest.TestCase):
         )
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_duplicate_transactions(self):
         records1 = [
             ['2017-05-01', 'A', '50.80', 'a'],
