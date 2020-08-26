@@ -3,18 +3,18 @@ from datetime import datetime
 from typing import Iterable, Tuple, NamedTuple, Set, List, Dict
 
 
-class RTrans(NamedTuple):
+class Transaction(NamedTuple):
     trans_date: str
     department: str
     amount: str
     payee: str
 
 
-def sort_tx_with_idx(transactions):
+def sort_tx_with_idx(transactions: Iterable[Tuple[int, Transaction]]):
     return sorted(transactions, key=lambda r: r[1].trans_date)
 
 
-def match_transactions(trans: RTrans, trans_list: Iterable[RTrans]) -> Iterable[RTrans]:
+def match_transactions(trans: Transaction, trans_list: Iterable[Transaction]) -> List[Tuple[int, Transaction]]:
     """
     Match a transaction with closest transactions in the transaction list
     The return reseult will be sorted in earliest time.
@@ -35,9 +35,9 @@ def match_transactions(trans: RTrans, trans_list: Iterable[RTrans]) -> Iterable[
     return result
 
 
-def reconcile_accounts(trans1: Iterable[List], trans2: Iterable[List]):
-    ttrans1 = list(enumerate([RTrans(*trans) for trans in trans1]))
-    ttrans2 = list(enumerate([RTrans(*trans) for trans in trans2]))
+def reconcile_accounts(trans1: Iterable[List[str]], trans2: Iterable[List[str]]):
+    ttrans1 = list(enumerate([Transaction(*trans) for trans in trans1]))
+    ttrans2 = list(enumerate([Transaction(*trans) for trans in trans2]))
     trans1_search_txs = ttrans1[:]
     trans2_remain_txs = ttrans2[:]
 
