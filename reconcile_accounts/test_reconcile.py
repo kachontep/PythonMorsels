@@ -100,7 +100,7 @@ class ReconcileAccountsTests(unittest.TestCase):
         )
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_transactions_match_nearby_days(self):
         records1 = [
             ['2017-05-02', 'A', '1.00', 'a'],

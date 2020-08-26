@@ -1,4 +1,5 @@
 from collections import defaultdict
+from datetime import datetime
 from typing import Iterable, Tuple, NamedTuple, Set, List, Dict
 
 
@@ -9,49 +10,62 @@ class RTrans(NamedTuple):
     payee: str
 
 
-class RTransResult(NamedTuple):
-    trans_date: str
-    department: str
-    amount: str
-    payee: str
-    result: str
+def sort_tx_with_idx(transactions):
+    return sorted(transactions, key=lambda r: r[1].trans_date)
 
 
-def make_trans_tuple(trans: Iterable[List]) -> Iterable[RTrans]:
-    return [RTrans(*tran) for tran in trans]
+def match_transactions(trans: RTrans, trans_list: Iterable[RTrans]) -> Iterable[RTrans]:
+    """
+    Match a transaction with closest transactions in the transaction list
+    The return reseult will be sorted in earliest time.
+    :param tran: a transation to search for
+    :param tran_list: list of transactiont to search for the closest
+    :return:
+    """
+    trans_date = datetime.strptime(trans.trans_date, '%Y-%m-%d')
 
-
-def make_trans_result(trans: Iterable[RTrans], shared_trans_count: Dict[RTrans, int]) -> Iterable[RTransResult]:
-    shared_trans_count = shared_trans_count.copy()
     result = []
-    for tran in trans:
-        if tran in shared_trans_count and shared_trans_count[tran] > 0:
-            shared_trans_count[tran] -= 1
-            found = True
-        else:
-            found = False
-        result.append(
-            list(RTransResult(*tran, 'FOUND' if found else 'MISSING')))
+    for idx, tx in trans_list:
+        tx_date = datetime.strptime(tx.trans_date, '%Y-%m-%d')
+        date_diff = abs(trans_date - tx_date)
+        if date_diff.days <= 1 and trans[1:] == tx[1:]:
+            result.append((idx, tx))
+
+    result = sort_tx_with_idx(result)
     return result
 
 
-def max_shared_trans_count(trans1: Iterable[RTrans], trans2: Iterable[RTrans], shared_trans: Set[RTrans]) -> Dict[RTrans, int]:
-    count1 = defaultdict(int)
-    count2 = defaultdict(int)
-    for tran in trans1:
-        if tran in shared_trans:
-            count1[tran] += 1
-    for tran in trans2:
-        if tran in shared_trans:
-            count2[tran] += 1
-    return {tran: min(count1[tran], count2[tran]) for tran in shared_trans}
+def reconcile_accounts(trans1: Iterable[List], trans2: Iterable[List]):
+    ttrans1 = list(enumerate([RTrans(*trans) for trans in trans1]))
+    ttrans2 = list(enumerate([RTrans(*trans) for trans in trans2]))
+    trans1_search_txs = ttrans1[:]
+    trans2_remain_txs = ttrans2[:]
 
+    # Scan and matching process after the process
+    # the matches in trans1 and remain unmatched in trans2
+    # result are kept in trans1_match_txs and trans2_remain_txs
+    # respectively.
+    trans1_match_txs = []
+    for idx, s_trans in sort_tx_with_idx(trans1_search_txs):
+        matches = match_transactions(s_trans, trans2_remain_txs)
+        if matches:
+            trans2_remain_txs.remove(matches[0])
+            trans1_match_txs.append((idx, s_trans))
 
-def reconcile_accounts(trans1: Iterable[List], trans2: Iterable[List]) -> Tuple[Iterable[RTransResult], Iterable[RTransResult]]:
-    ttrans1 = make_trans_tuple(trans1)
-    ttrans2 = make_trans_tuple(trans2)
-    shared_trans = set(ttrans1).intersection(set(ttrans2))
-    shared_trans_count = max_shared_trans_count(ttrans1, ttrans2, shared_trans)
-    output1 = make_trans_result(ttrans1, shared_trans_count)
-    output2 = make_trans_result(ttrans2, shared_trans_count)
+    # Generate result for transaction in transaction1
+    # list both found and missing
+    output1 = []
+    for idx, s_trans in ttrans1:
+        output1.append(
+            [*s_trans, 'FOUND' if (idx, s_trans)
+             in trans1_match_txs else 'MISSING']
+        )
+
+    # Generate result for transaction in transaction2 list
+    # both found and missing
+    output2 = []
+    for idx, r_trans in ttrans2:
+        output2.append(
+            [*r_trans, 'MISSING' if (idx, r_trans) in trans2_remain_txs else 'FOUND'])
+
     return output1, output2
