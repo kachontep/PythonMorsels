@@ -49,23 +49,21 @@ def reconcile_accounts(trans1: Iterable[List[str]], trans2: Iterable[List[str]])
     for idx, s_trans in sort_tx_with_idx(trans1_search_txs):
         matches = match_transactions(s_trans, trans2_remain_txs)
         if matches:
-            trans2_remain_txs.remove(matches[0])
             trans1_match_txs.append((idx, s_trans))
+            trans2_remain_txs.remove(matches[0])
 
     # Generate result for transaction in transaction1
     # list both found and missing
-    output1 = []
-    for idx, s_trans in ttrans1:
-        output1.append(
-            [*s_trans, 'FOUND' if (idx, s_trans)
-             in trans1_match_txs else 'MISSING']
-        )
+    output1 = [
+        [*s_trans, (idx, s_trans) in trans1_match_txs and 'FOUND' or 'MISSING']
+        for idx, s_trans in ttrans1
+    ]
 
     # Generate result for transaction in transaction2 list
     # both found and missing
-    output2 = []
-    for idx, r_trans in ttrans2:
-        output2.append(
-            [*r_trans, 'MISSING' if (idx, r_trans) in trans2_remain_txs else 'FOUND'])
+    output2 = [
+        [*r_trans, (idx, r_trans) in trans2_remain_txs and 'MISSING' or 'FOUND']
+        for idx, r_trans in ttrans2
+    ]
 
     return output1, output2
