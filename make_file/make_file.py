@@ -31,14 +31,15 @@ make_file_options = {
 def make_file(contents=None, directory=None, **options):
     options = {**make_file_options, **options}
     d = Path(directory) if directory else Path.cwd()
-    if not d.exists():
-        raise ValueError(f"Directory '{str(d)}' should exists")
     f = d / Path(temp_file_name())
-    f.touch()
+    if not d.exists():
+        d.mkdir()
+    if not f.exists():
+        f.touch()
+    if contents:
+        with f.open(**options) as h:
+            h.write(contents)
     try:
-        if contents:
-            with f.open(**options) as h:
-                h.write(contents)
         yield str(f)
     finally:
         if f.exists():
