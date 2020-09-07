@@ -22,13 +22,24 @@ def temp_file_name():
     return random_file_name(random_file_length())
 
 
+make_file_options = {
+    "mode": "wt",
+}
+
+
 @contextmanager
-def make_file():
-    file_name = temp_file_name()
-    f = Path(file_name)
+def make_file(contents=None, directory=None, **options):
+    options = {**make_file_options, **options}
+    d = Path(directory) if directory else Path.cwd()
+    if not d.exists():
+        raise ValueError(f"Directory '{str(d)}' should exists")
+    f = d / Path(temp_file_name())
     f.touch()
     try:
-        yield file_name
+        if contents:
+            with f.open(**options) as h:
+                h.write(contents)
+        yield str(f)
     finally:
         if f.exists():
             f.unlink()

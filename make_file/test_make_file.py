@@ -34,7 +34,8 @@ class MakeFileTests(unittest.TestCase):
         self.assertFalse(os.path.isfile(filename))
 
     def test_file_deleted_even_after_exception(self):
-        class CustomException(ValueError): pass
+        class CustomException(ValueError):
+            pass
         with self.assertRaises(CustomException):
             with make_file() as filename:
                 self.assertTrue(os.path.isfile(filename))
@@ -42,7 +43,7 @@ class MakeFileTests(unittest.TestCase):
         self.assertFalse(os.path.isfile(filename))
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_allow_file_to_have_initial_contents(self):
         with make_file(contents="hello there!") as filename:
             with open(filename, mode='rt') as my_file:
@@ -50,7 +51,7 @@ class MakeFileTests(unittest.TestCase):
             self.assertEqual(contents, 'hello there!')
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_allow_specifying_directory(self):
         from tempfile import mkdtemp  # This may be a hint
         directory = mkdtemp()
@@ -60,7 +61,7 @@ class MakeFileTests(unittest.TestCase):
                 self.assertEqual(my_file.read(), 'hi\nthere!')
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_allow_specifying_file_options(self):
         with make_file(contents=b"hi\nthere!", mode='wb') as filename:
             with open(filename, mode='rt') as my_file:
