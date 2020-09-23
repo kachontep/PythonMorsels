@@ -98,7 +98,7 @@ class TimerTests(unittest.TestCase):
         self.assertAlmostEqual(runs[3], 0.03, places=2)
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_globally_named_timer(self):
         timer1 = Timer("t1")
         timer2 = Timer("t1")
