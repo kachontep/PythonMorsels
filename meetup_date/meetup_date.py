@@ -1,5 +1,16 @@
 import datetime
 import calendar
+from enum import IntEnum
+
+
+class Weekday(IntEnum):
+    MONDAY = 0
+    TUESDAY = 1
+    WEDNESDAY = 2
+    THURSDAY = 3
+    FRIDAY = 4
+    SATURDAY = 5
+    SUNDAY = 6
 
 
 def meetup_date(year, month, nth=4, weekday=3):
