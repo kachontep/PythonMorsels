@@ -34,14 +34,13 @@ class ComparatorTests(unittest.TestCase):
 
     def test_string_representation(self):
         self.assertEqual(
-            repr(Comparator(5, delta=0.1)),
-            "Comparator(5, delta=0.1)",
+            repr(Comparator(5, delta=0.1)), "Comparator(5, delta=0.1)",
         )
         self.assertEqual(repr(Comparator(5)), "Comparator(5, delta=1e-07)")
         self.assertEqual(str(Comparator(5)), "Comparator(5, delta=1e-07)")
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_addition_and_subtraction(self):
         self.assertEqual(Comparator(5, delta=0.1) + 6, 11.1)
         self.assertEqual(6 + Comparator(5, delta=0.1), 10.9)

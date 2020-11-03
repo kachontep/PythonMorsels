@@ -11,6 +11,28 @@ class Comparator:
         else:
             return self._check_delta(other)
 
+    def __add__(self, other):
+        if not isinstance(other, (int, float)):
+            raise TypeError("support only with int or float")
+        return self.__class__(self._val + other, delta=self._delta)
+
+    def __radd__(self, other):
+        return self + other
+
+    def __sub__(self, other):
+        return self + -1 * other
+
+    def __rsub__(self, other):
+        return -1 * self + other
+
+    def __mul__(self, other):
+        if not isinstance(other, (int, float)):
+            raise TypeError("support only with int or float")
+        return self.__class__(self._val * other, delta=self._delta)
+
+    def __rmul__(self, other):
+        return self * other
+
     def _check_delta(self, other):
         return abs(other - self._val) <= self._delta
 
