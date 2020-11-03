@@ -57,13 +57,10 @@ class Comparator:
         return repr(self)
 
     @classmethod
+    @contextmanager
     def default_delta(cls, delta):
-        @contextmanager
-        def contextmanager_factory():
-            _default_delta, cls._default_delta = cls._default_delta, delta
-            try:
-                yield
-            finally:
-                cls._default_delta = _default_delta
-
-        return contextmanager_factory()
+        _save_delta, cls._default_delta = cls._default_delta, delta
+        try:
+            yield
+        finally:
+            cls._default_delta = _save_delta
