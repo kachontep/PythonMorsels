@@ -32,13 +32,10 @@ class PiecewiseRange:
         elif other is self:
             return True
         else:
-            return repr(self) == repr(other)
+            return self._ranges == other._ranges
 
     def _iter_items(self):
-        result = []
-        for subrange in self._subranges:
-            result.extend(subrange)
-        return result
+        return functools.reduce(lambda acc, i: acc + list(i), self._subranges, [])
 
     @staticmethod
     def parse_inputs(inputs):
@@ -63,10 +60,10 @@ class PiecewiseRange:
 
         def group_range(items, input):
             if items:
-                a_min, a_max = range_min_max(items[-1])
-                b_min, b_max = range_min_max(input)
-                if b_min - a_max == 1:
-                    return items[:-1] + [f"{a_min}-{b_max}"]
+                prev_min, prev_max = range_min_max(items[-1])
+                curr_min, curr_max = range_min_max(input)
+                if curr_min - prev_max == 1:
+                    return items[:-1] + [f"{prev_min}-{curr_max}"]
                 else:
                     return items + [input]
             else:
