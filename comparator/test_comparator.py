@@ -66,7 +66,7 @@ class ComparatorTests(unittest.TestCase):
         self.assertNotEqual(five + seven, 12.6)
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_default_delta_context_manager(self):
         with Comparator.default_delta(0.5):
             self.assertEqual(Comparator(5), 5.5)

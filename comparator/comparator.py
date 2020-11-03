@@ -1,7 +1,13 @@
+from contextlib import contextmanager
+
+
 class Comparator:
-    def __init__(self, val, delta=1e-7):
+
+    _default_delta = 1e-7
+
+    def __init__(self, val, delta=None):
         self._val = val
-        self._delta = delta
+        self._delta = delta or self.__class__._default_delta
 
     def _check_delta(self, other):
         return abs(other - self._val) <= self._delta
@@ -49,3 +55,15 @@ class Comparator:
 
     def __str__(self):
         return repr(self)
+
+    @classmethod
+    def default_delta(cls, delta):
+        @contextmanager
+        def contextmanager_factory():
+            _default_delta, cls._default_delta = cls._default_delta, delta
+            try:
+                yield
+            finally:
+                cls._default_delta = _default_delta
+
+        return contextmanager_factory()
