@@ -7,7 +7,7 @@ class PiecewiseRange:
         self._subranges = PiecewiseRange.parse_ranges(self._ranges)
 
     def __iter__(self):
-        yield from self._items()
+        yield from self._iter_items()
 
     def __len__(self):
         return sum([len(subrange) for subrange in self._subranges])
@@ -34,7 +34,7 @@ class PiecewiseRange:
         else:
             return repr(self) == repr(other)
 
-    def _items(self):
+    def _iter_items(self):
         result = []
         for subrange in self._subranges:
             result.extend(subrange)
