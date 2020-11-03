@@ -53,7 +53,7 @@ class ComparatorTests(unittest.TestCase):
         self.assertEqual(6 - Comparator(7, delta=0.1), -1.05)
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_arithmetic_and_comparisons_with_comparators(self):
         five = Comparator(5, delta=0.1)
         six = Comparator(6, delta=0.1)
