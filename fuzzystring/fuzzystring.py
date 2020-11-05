@@ -5,10 +5,12 @@ class FuzzyString:
     def __init__(self, val):
         self._val = val
 
-    def _validate_types(self, other):
+    @staticmethod
+    def _validate_types(other):
         return isinstance(other, (str, FuzzyString))
 
-    def _normalize(self, val):
+    @staticmethod
+    def _normalize(val):
         return unicodedata.normalize("NFKD", str(val).casefold())
 
     def __repr__(self):
@@ -41,7 +43,6 @@ class FuzzyString:
     def __contains__(self, member):
         if self._validate_types(member):
             return self._normalize(member) in self._normalize(self)
-            return str.casefold(member) in str.casefold(str(self))
         return NotImplemented
 
     def __add__(self, other):
