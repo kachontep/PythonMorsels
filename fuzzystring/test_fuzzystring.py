@@ -51,7 +51,7 @@ class FuzzyStringTests(unittest.TestCase):
         self.assertFalse("animal" >= apple)
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_string_operators(self):
         hello = FuzzyString("heLlO")
         self.assertEqual(hello + "!", "helLo!")
