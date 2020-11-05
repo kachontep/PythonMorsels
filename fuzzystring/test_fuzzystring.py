@@ -36,7 +36,7 @@ class FuzzyStringTests(unittest.TestCase):
         self.assertEqual(repr(hello), repr("heLlO"))
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_other_string_comparisons(self):
         apple = FuzzyString("Apple")
         self.assertGreater(apple, "animal")
@@ -68,9 +68,9 @@ class FuzzyStringTests(unittest.TestCase):
         string = FuzzyString("ß, ss, \uf9fb, and \u7099")
         self.assertEqual(string, "ss, ß, \u7099, and \uf9fb")
 
-        accent = '\u0301'
-        accented_e = FuzzyString('\u00e9')
-        self.assertEqual('\u0065\u0301', accented_e)
+        accent = "\u0301"
+        accented_e = FuzzyString("\u00e9")
+        self.assertEqual("\u0065\u0301", accented_e)
         self.assertIn(accent, accented_e)
 
 

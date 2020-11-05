@@ -13,3 +13,21 @@ class FuzzyString:
             return NotImplemented
         else:
             return str(self).lower() == str(other).lower()
+
+    def __lt__(self, other):
+        if not isinstance(other, (str, FuzzyString)):
+            return NotImplemented
+        else:
+            return str(self).lower() < str(other).lower()
+
+    def __ge__(self, other):
+        return not (self < other)
+
+    def __gt__(self, other):
+        if not isinstance(other, (str, FuzzyString)):
+            return NotImplemented
+        else:
+            return str(self).lower() > str(other).lower()
+
+    def __le__(self, other):
+        return not (self > other)
