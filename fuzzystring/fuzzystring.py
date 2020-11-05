@@ -49,3 +49,6 @@ class FuzzyString:
         if self._validate_types(other):
             return FuzzyString(str(self) + str(other))
         return NotImplemented
+
+    def __radd__(self, other):
+        return self + other
