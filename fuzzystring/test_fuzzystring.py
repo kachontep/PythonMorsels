@@ -61,7 +61,7 @@ class FuzzyStringTests(unittest.TestCase):
         self.assertNotIn("He!", hello)
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_normalizes_strings(self):
         string = FuzzyString("\u00df and ss")
         self.assertEqual(string, "ss and \u00df")
