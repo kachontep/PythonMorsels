@@ -26,7 +26,7 @@ class WindowTests(unittest.TestCase):
 
     def test_string(self):
         inputs = "hey"
-        outputs = [('h', 'e'), ('e', 'y')]
+        outputs = [("h", "e"), ("e", "y")]
         self.assertIterableEqual(window(inputs, 2), outputs)
 
     def test_window_size_3(self):
@@ -39,14 +39,14 @@ class WindowTests(unittest.TestCase):
         self.assertIterableEqual(window([], 0), [])
 
     def test_accepts_iterator(self):
-        inputs = (n**2 for n in [1, 2, 3, 4])
+        inputs = (n ** 2 for n in [1, 2, 3, 4])
         outputs = [(1, 4), (4, 9), (9, 16)]
         self.assertIterableEqual(window(inputs, 2), outputs)
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_returns_lazy_iterable(self):
-        inputs = (n**2 for n in [1, 2, 3, 4, 5])
+        inputs = (n ** 2 for n in [1, 2, 3, 4, 5])
         iterable = window(inputs, 2)
         self.assertEqual(iter(iterable), iter(iterable))
         self.assertEqual(next(iterable), (1, 4))

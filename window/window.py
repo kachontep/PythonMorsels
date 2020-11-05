@@ -1,3 +1,6 @@
+import itertools
+
+
 def window(iterable, size):
     items = []
     captured = False
@@ -9,3 +12,5 @@ def window(iterable, size):
             continue
         yield tuple(items)
         items = items[1:]
+    if not captured:
+        return [tuple(items) + ((None,) * (size - len(items)))]
