@@ -64,7 +64,6 @@ class Tag:
 
         def content_parser(tag_content):
             content_start = 0
-            last_space = None
             in_content = False
             in_quoted = False
             for pos, c in enumerate(tag_content):
@@ -76,14 +75,10 @@ class Tag:
                     in_content = True
                     content_start = pos
                 elif c == " ":
-                    if in_content and in_quoted:
+                    if not in_content or in_quoted:
                         continue
-                    if last_space:
-                        if last_space == pos - 1:
-                            continue
                     yield tag_content[content_start:pos]
                     in_content = False
-                    last_space = pos
             if in_content:
                 yield tag_content[content_start:]
 
