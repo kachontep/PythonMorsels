@@ -1,5 +1,9 @@
-START_TAG = "<"
-END_TAG = ">"
+from itertools import groupby
+from operator import itemgetter
+
+TAG_START = "<"
+
+TAG_END = ">"
 
 
 class Tag:
@@ -23,9 +27,9 @@ class Tag:
     @staticmethod
     def _parse_tag_name(tag_content):
         tag_content = tag_content.strip()
-        if not tag_content.startswith(START_TAG) or not tag_content.endswith(END_TAG):
+        if not tag_content.startswith(TAG_START) or not tag_content.endswith(TAG_END):
             raise ValueError(f"{tag_content} is not valid tag string")
-        tag_content = tag_content.lstrip(START_TAG).rstrip(END_TAG)
+        tag_content = tag_content.lstrip(TAG_START).rstrip(TAG_END)
         try:
             pos = tag_content.index(" ")
         except ValueError:
@@ -39,41 +43,62 @@ class Tag:
 
     @staticmethod
     def _parse_tag_attrs(tag_content, tag_name):
+        QUOTES = ['"', "'"]
+
+        def strip_quote(a_val):
+            vals = [
+                a_val.strip(quote)
+                for quote in QUOTES
+                if a_val.startswith(quote) and a_val.endswith(quote)
+            ]
+            return vals[0] if vals else a_val
+
+        def map_content(a_str):
+            a_str = a_str.strip()
+            if "=" in a_str:
+                name, value = a_str.split("=")
+                value = strip_quote(value)
+            else:
+                name, value = a_str, a_str
+            return name, value
+
+        def content_parser(tag_content):
+            content_start = 0
+            last_space = None
+            in_content = False
+            in_quoted = False
+            for pos, c in enumerate(tag_content):
+                if c != " ":
+                    if in_content:
+                        if c in QUOTES:
+                            in_quoted = not in_quoted
+                        continue
+                    in_content = True
+                    content_start = pos
+                elif c == " ":
+                    if in_content and in_quoted:
+                        continue
+                    if last_space:
+                        if last_space == pos - 1:
+                            continue
+                    yield tag_content[content_start:pos]
+                    in_content = False
+                    last_space = pos
+            if in_content:
+                yield tag_content[content_start:]
+
         tag_content = (
             tag_content.strip()
             .lower()
-            .lstrip(START_TAG)
-            .rstrip(END_TAG)
+            .lstrip(TAG_START)
+            .rstrip(TAG_END)
             .lstrip(tag_name)
             .strip()
         )
-        for content in tag_content.split(" "):
-            content = content.strip()
-            if "=" in content:
-                name, value = content.split("=")
-            else:
-                name, value = content, content
-            yield name, value
-        # pos = 0
-        # try:
-        #     while True:
-        #         op_pos = tag_content.index("=", pos)
-        #         try:
-        #             val_pos = tag_content.index(" ", op_pos)
-        #         except ValueError:
-        #             val_pos = len(tag_content)
-        #         name = tag_content[pos:op_pos].strip().lower()
-        #         value = tag_content[op_pos + 1 : val_pos].strip()
-        #         yield name, value
-        #         pos = val_pos + 1
-        # except ValueError:
-        #     pass
+        return [map_content(s) for s in content_parser(tag_content)]
 
     @staticmethod
     def parse(tag_content):
-        from itertools import groupby
-        from operator import itemgetter
-
         name = Tag._parse_tag_name(tag_content)
         attrs = sorted(Tag._parse_tag_attrs(tag_content, name), key=itemgetter(0))
         attrs = set(

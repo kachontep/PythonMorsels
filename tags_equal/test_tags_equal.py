@@ -84,7 +84,7 @@ class TagsEqualTests(unittest.TestCase):
         )
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_quotes(self):
         self.assertTrue(tags_equal('<input type="text">', "<input type=text>",))
         self.assertFalse(tags_equal('<img type="text">', "<Img type=hidden>",))
