@@ -55,7 +55,6 @@ class Tag:
                     val_pos = tag_content.index(" ", op_pos)
                 except ValueError:
                     val_pos = len(tag_content)
-
                 name = tag_content[pos:op_pos].strip().lower()
                 value = tag_content[op_pos + 1 : val_pos].strip()
                 yield name, value
@@ -65,8 +64,14 @@ class Tag:
 
     @staticmethod
     def parse(tag_content):
+        from itertools import groupby
+        from operator import itemgetter
+
         name = Tag._parse_tag_name(tag_content)
-        attrs = set(Tag._parse_tag_attrs(tag_content, name))
+        attrs = sorted(Tag._parse_tag_attrs(tag_content, name), key=itemgetter(0))
+        attrs = set(
+            (k, itemgetter(1)(next(vs))) for k, vs in groupby(attrs, key=itemgetter(0))
+        )
         return Tag(name, attrs)
 
 
