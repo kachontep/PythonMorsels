@@ -47,20 +47,27 @@ class Tag:
             .lstrip(tag_name)
             .strip()
         )
-        pos = 0
-        try:
-            while True:
-                op_pos = tag_content.index("=", pos)
-                try:
-                    val_pos = tag_content.index(" ", op_pos)
-                except ValueError:
-                    val_pos = len(tag_content)
-                name = tag_content[pos:op_pos].strip().lower()
-                value = tag_content[op_pos + 1 : val_pos].strip()
-                yield name, value
-                pos = val_pos + 1
-        except ValueError:
-            pass
+        for content in tag_content.split(" "):
+            content = content.strip()
+            if "=" in content:
+                name, value = content.split("=")
+            else:
+                name, value = content, content
+            yield name, value
+        # pos = 0
+        # try:
+        #     while True:
+        #         op_pos = tag_content.index("=", pos)
+        #         try:
+        #             val_pos = tag_content.index(" ", op_pos)
+        #         except ValueError:
+        #             val_pos = len(tag_content)
+        #         name = tag_content[pos:op_pos].strip().lower()
+        #         value = tag_content[op_pos + 1 : val_pos].strip()
+        #         yield name, value
+        #         pos = val_pos + 1
+        # except ValueError:
+        #     pass
 
     @staticmethod
     def parse(tag_content):

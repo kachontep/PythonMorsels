@@ -67,7 +67,7 @@ class TagsEqualTests(unittest.TestCase):
         )
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_valueless_keys(self):
         self.assertTrue(
             tags_equal(
