@@ -36,10 +36,10 @@ class ChainSequence:
         return all(a == b for a, b in zip(other_, self_))
 
     def __add__(self, other):
-        return ChainSequence(*self._append(other))
+        return ChainSequence(*(self._sequences + [other]))
 
     def __iadd__(self, other):
-        self._sequences = self._append(other)
+        self._sequences = self._sequences + [other]
         return self
 
     def __repr__(self):
