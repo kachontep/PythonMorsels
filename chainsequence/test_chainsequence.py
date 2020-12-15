@@ -65,7 +65,7 @@ class ChainSequenceTests(unittest.TestCase):
         self.assertEqual(chain.sequences, sequences)
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_sliceability(self):
         chain = ChainSequence('hi', [2, 1, 3, 4, 7])
         view = chain[:4]
@@ -74,7 +74,7 @@ class ChainSequenceTests(unittest.TestCase):
         self.assertEqual(list(view), ['h', 'i', 'y', 'a'])
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_string_representations(self):
         chain = ChainSequence('hi', [2, 1, 3, 4, 7])
         self.assertEqual(str(chain), "ChainSequence('hi', [2, 1, 3, 4, 7])")
@@ -86,7 +86,7 @@ class ChainSequenceTests(unittest.TestCase):
         )
 
     # To test the Bonus part of this exercise, comment out the following line
-    @unittest.expectedFailure
+    # @unittest.expectedFailure
     def test_addition(self):
         chain1 = ChainSequence([2, 1], [3])
         chain2 = chain1 + [4, 7]
