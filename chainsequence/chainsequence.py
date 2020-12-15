@@ -56,9 +56,6 @@ class ChainSequence:
                 return s[key - pos]
             pos += len(s)
 
-    def _append(self, sequence):
-        return self._sequences + [sequence]
-
     @property
     def sequences(self):
         return self._sequences
